@@ -1,5 +1,5 @@
 #!/bin/bash
-# smoke_test.sh
+# scripts/reset_prometheus_data.sh
 
 # Load token from environment or generate using hardcoded demo JWT secret
 TOKEN=$(python3 -c "import jwt; print(jwt.encode({'sub': 'demo-user'}, 'supersecretkey', algorithm='HS256'))")

@@ -44,7 +44,7 @@ generate-jwt:
 	@python3 -c "import jwt, datetime; print(jwt.encode({'sub': 'demo-user', 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)}, 'supersecretkey', algorithm='HS256'))" > .jwt.tmp && tail -n 1 .jwt.tmp
 
 reset-prometheus:
-	bash scripts/reset_prometheus_data.sh
+	bash ./scripts/reset_prometheus_data.sh
 
 check:
 	@echo "🔍 Running system checks..."
