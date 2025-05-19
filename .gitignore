@@ -1,0 +1,69 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Python environment files
+*.egg
+*.egg-info/
+dist/
+build/
+
+# SQLite database
+data/*.db
+*.sqlite3
+
+# JWT temporary files
+.jwt.tmp
+
+# Logs and debug output
+*.log
+logs/
+*.pid
+
+# Docker files and volumes
+prometheus-data/
+grafana-data/
+docker-compose.override.yml
+
+# Ignore compiled test outputs or coverage
+htmlcov/
+.tox/
+coverage.*
+.cache
+pytest_cache/
+nosetests.xml
+test-results.xml
+junit.xml
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Compiled static files / frontend (if applicable)
+frontend/dist/
+frontend/node_modules/
+
+# Ignore temporary files
+*.swp
+*~
+*.bak
+*.tmp

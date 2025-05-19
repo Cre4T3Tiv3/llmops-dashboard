@@ -1,0 +1,44 @@
+{
+  "title": "LLMOps Overview",
+  "schemaVersion": 30,
+  "version": 1,
+  "refresh": "10s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "editable": true,
+  "panels": [
+    {
+      "type": "graph",
+      "title": "LLM Request Rate by User",
+      "targets": [
+        {
+          "expr": "sum by(user) (rate(request_count_total{endpoint=\"/llm\", method=\"POST\"}[1m]))",
+          "legendFormat": "{{user}}",
+          "refId": "C"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 3, "w": 12, "h": 8 }
+    },
+    {
+      "type": "graph",
+      "title": "Latency by User (p95)",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(request_latency_seconds_bucket[5m])) by (le, user))",
+          "legendFormat": "p95 {{user}}",
+          "refId": "D"
+        }
+      ],
+      "gridPos": { "x": 12, "y": 3, "w": 12, "h": 8 }
+    }
+  ],
+  "annotations": {
+    "list": []
+  },
+  "templating": {
+    "list": []
+  }
+}
