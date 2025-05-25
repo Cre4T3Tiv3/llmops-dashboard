@@ -12,30 +12,27 @@ Key Features:
 """
 
 import time
-from fastapi import FastAPI, Request, Depends
+
+from fastapi import Depends, FastAPI, Request
 from fastapi.responses import Response
-from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
+from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
 
 from src.auth import verify_jwt_token
-from src.routes import llm_proxy
-from src.routes import token_issuer
+from src.routes import llm_proxy, token_issuer
 
 # Initialize FastAPI app
 app = FastAPI()
 
 # Prometheus counter for number of requests by endpoint, method, and user
 REQUEST_COUNT = Counter(
-    "request_count",
-    "Total API Requests",
-    ["endpoint", "method", "user"]
+    "request_count", "Total API Requests", ["endpoint", "method", "user"]
 )
 
 # Prometheus histogram for request latency by endpoint and user
 REQUEST_LATENCY = Histogram(
-    "request_latency_seconds",
-    "API Request latency",
-    ["endpoint", "user"]
+    "request_latency_seconds", "API Request latency", ["endpoint", "user"]
 )
+
 
 @app.middleware("http")
 async def metrics_middleware(request: Request, call_next):
@@ -62,17 +59,13 @@ async def metrics_middleware(request: Request, call_next):
 
     # Update Prometheus metrics
     REQUEST_COUNT.labels(
-        endpoint=request.url.path,
-        method=request.method,
-        user=user
+        endpoint=request.url.path, method=request.method, user=user
     ).inc()
 
-    REQUEST_LATENCY.labels(
-        endpoint=request.url.path,
-        user=user
-    ).observe(process_time)
+    REQUEST_LATENCY.labels(endpoint=request.url.path, user=user).observe(process_time)
 
     return response
+
 
 @app.get("/metrics")
 def metrics():
@@ -83,6 +76,7 @@ def metrics():
         Response: A plain-text HTTP response with all current metric data.
     """
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
 
 # Register API routes
 app.include_router(token_issuer.router)

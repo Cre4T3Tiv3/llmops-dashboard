@@ -10,10 +10,11 @@ Environment Variables:
 - JWT_SECRET: The secret key used to sign JWTs. Falls back to "supersecretkey" if not set.
 """
 
-from fastapi import APIRouter
-import jwt
-import os
 import datetime
+import os
+
+import jwt
+from fastapi import APIRouter
 
 # Secret key used for signing JWT tokens
 JWT_SECRET = os.getenv("JWT_SECRET", "supersecretkey")
@@ -23,6 +24,7 @@ JWT_ALGORITHM = "HS256"
 
 # Create a FastAPI router instance
 router = APIRouter()
+
 
 @router.post("/auth/token")
 def issue_token():
@@ -37,7 +39,7 @@ def issue_token():
     demo_user = "demo-user"
     payload = {
         "sub": demo_user,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
     }
     token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
     return {"access_token": token}

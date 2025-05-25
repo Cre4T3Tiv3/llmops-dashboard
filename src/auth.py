@@ -12,11 +12,12 @@ Environment Variables:
 """
 
 import os
-from fastapi import HTTPException, Security
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
 import jwt
-from jwt import PyJWTError
 from dotenv import load_dotenv
+from fastapi import HTTPException, Security
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from jwt import PyJWTError
 
 # Load environment variables from .env file
 load_dotenv()
@@ -29,6 +30,7 @@ JWT_ALGORITHM = "HS256"
 
 # FastAPI security scheme for extracting Bearer tokens from the Authorization header
 security = HTTPBearer()
+
 
 def verify_jwt_token(credentials: HTTPAuthorizationCredentials = Security(security)):
     """
@@ -46,7 +48,9 @@ def verify_jwt_token(credentials: HTTPAuthorizationCredentials = Security(securi
     """
     try:
         # Decode the JWT and validate its signature and expiration
-        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        payload = jwt.decode(
+            credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM]
+        )
         user_id = payload.get("sub")
         if not user_id:
             raise HTTPException(status_code=401, detail="Token missing subject")

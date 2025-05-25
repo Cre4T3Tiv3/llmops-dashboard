@@ -15,15 +15,18 @@ Dependencies:
 - src.database.get_recent_logs: Fetches historical usage logs.
 """
 
-from fastapi import APIRouter, Depends, Request, Query
-from pydantic import BaseModel
 import random
+import subprocess
 import time
 from typing import List
-from src.database import log_usage, get_recent_logs
-import subprocess
+
+from fastapi import APIRouter, Depends, Query, Request
+from pydantic import BaseModel
+
+from src.database import get_recent_logs, log_usage
 
 router = APIRouter()
+
 
 class PromptRequest(BaseModel):
     """
@@ -32,7 +35,9 @@ class PromptRequest(BaseModel):
     Attributes:
         prompt (str): The user-provided input text to send to the LLM.
     """
+
     prompt: str
+
 
 class PromptResponse(BaseModel):
     """
@@ -41,7 +46,9 @@ class PromptResponse(BaseModel):
     Attributes:
         response (str): The LLM-generated response string.
     """
+
     response: str
+
 
 @router.post("/llm", response_model=PromptResponse)
 def call_llm(request: Request, body: PromptRequest):
@@ -71,9 +78,12 @@ def call_llm(request: Request, body: PromptRequest):
     latency = time.time() - start_time
     token_count = len(prompt.split())
 
-    log_usage(user=user, prompt=prompt, model=model_used, latency=latency, tokens=token_count)
+    log_usage(
+        user=user, prompt=prompt, model=model_used, latency=latency, tokens=token_count
+    )
 
     return {"response": f"[{model_used.capitalize()}] Answer to: {prompt}"}
+
 
 @router.get("/logs")
 def fetch_logs(limit: int = Query(10, ge=1, le=100)) -> List[dict]:

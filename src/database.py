@@ -13,7 +13,7 @@ Database: `data/usage.db`
 
 import sqlite3
 from datetime import datetime
-from typing import List, Dict
+from typing import Dict, List
 
 # Path to the local SQLite database
 DB_PATH = "data/usage.db"
@@ -21,7 +21,8 @@ DB_PATH = "data/usage.db"
 # Initialize database and ensure table exists
 conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
-cursor.execute('''
+cursor.execute(
+    """
     CREATE TABLE IF NOT EXISTS usage_logs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         timestamp TEXT,
@@ -31,9 +32,11 @@ cursor.execute('''
         latency REAL,
         tokens INTEGER
     )
-''')
+"""
+)
 conn.commit()
 conn.close()
+
 
 def log_usage(user: str, prompt: str, model: str, latency: float, tokens: int):
     """
@@ -48,12 +51,16 @@ def log_usage(user: str, prompt: str, model: str, latency: float, tokens: int):
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute('''
+    cursor.execute(
+        """
         INSERT INTO usage_logs (timestamp, user, prompt, model, latency, tokens)
         VALUES (?, ?, ?, ?, ?, ?)
-    ''', (datetime.utcnow().isoformat(), user, prompt, model, latency, tokens))
+    """,
+        (datetime.utcnow().isoformat(), user, prompt, model, latency, tokens),
+    )
     conn.commit()
     conn.close()
+
 
 def get_recent_logs(limit: int = 10) -> List[Dict]:
     """
@@ -67,12 +74,15 @@ def get_recent_logs(limit: int = 10) -> List[Dict]:
     """
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute('''
+    cursor.execute(
+        """
         SELECT id, timestamp, user, model, latency, tokens
         FROM usage_logs
         ORDER BY id DESC
         LIMIT ?
-    ''', (limit,))
+    """,
+        (limit,),
+    )
     rows = cursor.fetchall()
     conn.close()
     return [
@@ -82,7 +92,7 @@ def get_recent_logs(limit: int = 10) -> List[Dict]:
             "user": row[2],
             "model": row[3],
             "latency": row[4],
-            "tokens": row[5]
+            "tokens": row[5],
         }
         for row in rows
     ]
