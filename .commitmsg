@@ -1,0 +1,14 @@
+feat!: major refactor and beta v0.2.0 release
+
+- Integrated secure local LLaMA 3 inference via Ollama
+- Replaced all simulated LLM responses with real model routing
+- Added MCP (model control policy) enforcement for tokens and usage
+- Implemented metrics via Prometheus + Grafana dashboards
+- JWT-based user scoping for requests and tracking
+- Added SQLite-backed audit trail for prompt, user, model, and token logs
+- Provided full E2E test suite with simulation, smoke test, and metrics validation
+- Added Makefile tasks for dev, simulate, test, and monitoring flows
+- Introduced CI workflow using GitHub Actions with uv and pytest
+- Updated README, HOWTO, and project structure to reflect real model usage
+
+BREAKING CHANGE: replaces static llm_proxy mock logic; users must configure Ollama + models locally for full functionality
