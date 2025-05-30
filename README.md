@@ -1,8 +1,27 @@
-# 📊 LLMOps Dashboard
+<p align="center">
+  <a href="https://github.com/Cre4T3Tiv3/llmops-dashboard" target="_blank">
+    <img src="https://raw.githubusercontent.com/Cre4T3Tiv3/llmops-dashboard/main/docs/assets/llmops_dashboard_v0.2.0.png" alt="LLMOps Dashboard social preview" width="640"/>
+  </a>
+</p>
 
-![CI](https://github.com/Cre4T3Tiv3/llmops-dashboard/actions/workflows/ci.yml/badge.svg?branch=main)
-![License](https://img.shields.io/github/license/Cre4T3Tiv3/llmops-dashboard)
-![Stars](https://img.shields.io/github/stars/Cre4T3Tiv3/llmops-dashboard?style=social)
+<p align="center">
+  <em>Secure, observable, local-first LLM workflows — powered by LLaMA3, FastAPI, and Prometheus</em>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Cre4T3Tiv3/llmops-dashboard/actions/workflows/ci.yml?query=branch%3Amain" target="_blank">
+    <img src="https://github.com/Cre4T3Tiv3/llmops-dashboard/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI">
+  </a>
+  <a href="https://opensource.org/licenses/MIT" target="_blank">
+    <img src="https://img.shields.io/github/license/Cre4T3Tiv3/llmops-dashboard" alt="License: MIT">
+  </a>
+  <a href="https://github.com/Cre4T3Tiv3/llmops-dashboard/stargazers" target="_blank">
+    <img src="https://img.shields.io/github/stars/Cre4T3Tiv3/llmops-dashboard?style=social" alt="GitHub Stars">
+  </a>
+  <a href="https://www.python.org/downloads/" target="_blank">
+    <img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+">
+  </a>
+</p>
 
 ## ✨ Why This Exists
 
