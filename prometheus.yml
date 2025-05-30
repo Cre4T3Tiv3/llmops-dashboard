@@ -4,4 +4,4 @@ global:
 scrape_configs:
   - job_name: 'llmops-api'
     static_configs:
-      - targets: ['api:8000']
+      - targets: ['llmops-api:8000']

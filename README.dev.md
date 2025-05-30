@@ -1,30 +1,57 @@
 # 🛠️ LLMOps Dashboard — Developer Notes
 
-This guide supplements the main `README.md` with internal setup instructions, Grafana tips, metrics reset logic, and debugging workflows for contributors and maintainers.
+This document extends [`README.md`](./README.md) with advanced setup, debugging, and testing workflows tailored for contributors and maintainers.
 
 ---
 
-## 🧰 Developer Quickstart
+## 🚀 Developer Quickstart
 
 ```bash
-make up             # Start full stack (FastAPI, Prometheus, Grafana)
-make generate-jwt   # Create a demo JWT for testing
-make simulate       # Send traffic to /llm for dashboard validation
-make logs           # Tail FastAPI logs live
-make shell          # Enter API container shell
+make init            # Verify tools, set up .venv, install deps
+make up              # Launch full stack: FastAPI, Prometheus, Grafana
+make generate-jwt    # Create demo JWT for user `demo-user`
+make simulate        # Send traffic to /llm for metric generation
+make logs            # Stream FastAPI logs
+make shell           # Bash into FastAPI container
 ```
+
+> 📘 See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for PR conventions and coding standards.
+
+---
+
+## ✅ Environment Verifier (`make check`)
+
+Run this anytime to confirm your machine is ready for development:
+
+```bash
+make check
+```
+
+This verifies:
+
+* ✅ Docker and docker-compose availability
+* ✅ `sqlite3` is installed (needed for DB and smoke tests)
+* ✅ `.env` file exists and has `JWT_SECRET`
+* ✅ `ollama` is installed and accessible
+* ✅ The configured model (via `$OLLAMA_MODEL`, e.g., `llama3`) is present
+
+If the model is missing, you’ll see:
+
+```bash
+❌ Model 'llama3' not found in ollama list
+```
+
+> This is automatically run as part of `make init`.
 
 ---
 
 ## 🔐 JWT Auth Debugging
 
-### Generate and Use a Token
-
 ```bash
 make generate-jwt
 ```
 
-Use the printed token with:
+Use the token in:
 
 ```bash
 curl -X POST http://localhost:8000/llm \
@@ -35,26 +62,58 @@ curl -X POST http://localhost:8000/llm \
 ```
 
 * Token is signed with `JWT_SECRET` from `.env`
-* Subject is always `demo-user` by default
-* Expires in \~15 minutes (customizable in `token_issuer.py`)
+* Default subject is `demo-user`
+* Valid for 5–15 minutes (see `token_issuer.py`)
+
+> 🧪 Also used in tests (see `conftest.py` for validation)
+
+---
+
+## 📊 Grafana Dashboard Tips
+
+### ✅ Default Dashboard Provisioning
+
+This project auto-loads `grafana/dashboards/llmops_overview.json`
+on container start via built-in provisioning (see `docker/grafana.ini`).
+
+* Credentials & anonymous access controlled via `.env`
+
+```env
+GRAFANA_ADMIN_USER=admin         # ⚠️ Used for initial dashboard provisioning and local testing only (ChangeMe)
+GRAFANA_ADMIN_PASSWORD=llmops    # ⚠️ Used for initial dashboard provisioning and local testing only (ChangeMe)
+GRAFANA_ALLOW_ANON=true          # ⚠️ Used for initial dashboard provisioning and local testing only (ChangeMe)
+  ```
+
+* Access at [http://localhost:3000](http://localhost:3000)
+
+### 🔁 If panels look empty:
+
+* Change visualization type (e.g., Bar → Stat → Bar)
+* Click “Save dashboard” to reload panel bindings
+
+### 📤 Save custom dashboards:
+
+1. Open dashboard → ⚙️ → JSON Model
+2. Save to:
+
+```bash
+grafana/dashboards/llmops_overview.json
+```
+
+> Avoid hardcoding tokens, passwords, or local paths.
 
 ---
 
 ## 🔄 Reset Prometheus Metrics
 
-If dashboards become noisy or inflated due to simulation traffic:
-
 ```bash
 make reset-prometheus
 ```
 
-This performs:
+* Runs test to reset Prometheus state
+* Volume will be reset if permissions allow
 
-* Stops the Prometheus container
-* Deletes local volume (`prometheus-data/`)
-* Rebuilds the container with fresh metrics
-
-⚠️ **If permission denied**:
+If access fails:
 
 ```bash
 sudo chmod -R u+w prometheus-data/
@@ -62,38 +121,21 @@ sudo chmod -R u+w prometheus-data/
 
 ---
 
-## 📊 Grafana Dashboard Tips
+## 🗃️ SQLite Debugging
 
-### Reimporting or Refreshing
+Main DB is located at:
 
-If panels show `No Data` even with valid traffic:
+```bash
+data/usage.db
+```
 
-* Switch panel visualization type temporarily (e.g., `Bar` → `Stat`)
-* Save the dashboard after reverting back
-* This forces a refresh and resets internal data bindings
-
-### Exporting Changes
-
-After modifying dashboards:
-
-1. Click the ⚙️ gear icon → "JSON Model"
-2. Save into: `grafana/dashboards/llmops_overview.json`
-3. Avoid saving any absolute paths or injected secrets
-
----
-
-## 🗃️ SQLite Usage Logs
-
-* Logs live in `data/usage.db`
-* Contains: `user`, `prompt`, `model`, `latency`, and `tokens`
-
-Example:
+Inspect logs:
 
 ```bash
 sqlite3 data/usage.db 'SELECT * FROM usage_logs ORDER BY id DESC LIMIT 5;'
 ```
 
-To reset DB:
+To wipe DB:
 
 ```bash
 make clean
@@ -101,84 +143,170 @@ make clean
 
 ---
 
-## 🧪 Testing Scripts
+## 🧪 Testing + Simulation
 
-| Command           | Description                                    |
-| ----------------- | ---------------------------------------------- |
-| `make simulate`   | Sends 25 requests to `/llm` with `demo-user`   |
-| `make smoke-test` | Full check of JWT, `/llm`, metrics, and SQLite |
+| Command           | Description                                       |
+| ----------------- | ------------------------------------------------- |
+| `make simulate`   | Sends 25 `/llm` requests (triggers observability) |
+| `make smoke-test` | Runs E2E: JWT, prompt, metrics, DB log            |
+| `make test`       | All tests (unit + E2E + MCP)                      |
+
+> 🔬 See [HOWTO\_and\_E2E\_Testing.md](docs/HOWTO_and_E2E_Testing.md) for walkthroughs.
 
 ---
 
-## 🔥 Full Reset
-
-To wipe **everything** (volumes, cache, DB, metrics):
+## 🔥 Full Environment Reset
 
 ```bash
 make nuke
 ```
 
-Removes:
+Fully wipes your environment:
 
-* Containers
-* All volumes (incl. Prometheus + SQLite)
-* Cached Python/DB files
+* Removes Docker containers, images, volumes
+* Clears `prometheus-data` and `data/*.db`
+* Deletes `.venv` and Python caches
+
+> 🧹 To uninstall SQLite:
+>
+> * `sudo apt remove sqlite3`
+> * `sudo dnf remove sqlite`
+> * `sudo pacman -R sqlite`
 
 ---
 
-## 🧩 Component Map
+## 📦 Dependency Management via `uv`
 
-```text
-llmops-dashboard/
-├── src/                  # FastAPI app
-│   ├── main.py           # App entrypoint + middleware
-│   ├── auth.py           # JWT verification logic
-│   ├── database.py       # SQLite logging
-│   └── routes/           # /llm and /auth handlers
-├── grafana/              # Dashboards & persistent data
-│   └── dashboards/
-│       └── llmops_overview.json
-├── docker/               # docker-compose + Prometheus config
-│   └── prometheus.yml
-├── scripts/              # Traffic simulator, smoke test, reset
-├── data/                 # usage.db lives here (gitignored)
-├── Makefile              # One-liner developer commands
-└── .env / .env.example   # FastAPI secrets
+This project uses [`uv`](https://github.com/astral-sh/uv):
+
+```bash
+make dev-install
+```
+
+* Creates `.venv`
+* Installs from `pyproject.toml` (no `requirements.txt`)
+* Includes `[dev]` extras: `pytest`, `black`, etc.
+
+---
+
+## 🧪 MCP Test Coverage
+
+| Module              | Responsibilities                       |
+| ------------------- | -------------------------------------- |
+| `model_registry.py` | Model ID tracking, timestamps          |
+| `usage_policy.py`   | Token enforcement and per-user limits  |
+| `client_tracker.py` | Request counts, latency aggregation    |
+| `database.py`       | Full audit logs: prompt, tokens, model |
+
+Run individual tests:
+
+```bash
+pytest tests/unit/test_database.py
+pytest tests/e2e/test_smoke_flow.py
 ```
 
 ---
 
-## ⚠️ Common Gotchas
+## 📁 Component Map
 
-| Symptom                   | Fix                                                                |
-| ------------------------- | ------------------------------------------------------------------ |
-| `permission denied` on DB | `sudo chmod -R u+w data/`                                          |
-| Grafana panel shows blank | Toggle viz type (e.g. Bar → Stat), then save                       |
-| Prometheus fails to start | Check volume mount path vs. file (`prometheus.yml` must be a file) |
-| JWT invalid or expired    | Re-run `make generate-jwt`                                         |
-| SQLite not logging        | Ensure `/llm` is hit with valid headers + token                    |
+```text
+llmops-dashboard/
+├── .dockerignore
+├── .env
+├── .env.example
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── .gitignore
+├── .jwt.tmp
+├── Dockerfile
+├── LICENSE
+├── Makefile
+├── README.dev.md
+├── README.md
+├── data/
+├── docker-compose.override.yml
+├── docker-compose.yaml
+├── docs/
+│   ├── CONTRIBUTING.md
+│   └── HOWTO_and_E2E_Testing.md
+├── grafana/
+│   ├── dashboards/
+│   │   └── llmops_overview.json
+│   └── provisioning/
+│       └── dashboards/
+│           └── dashboards.yaml
+├── llmops/
+│   ├── auth.py
+│   ├── database.py
+│   ├── main.py
+│   └── mcp/
+│   │   ├── __init__.py
+│   │   ├── client_tracker.py
+│   │   ├── model_registry.py
+│   │   └── usage_policy.py
+│   └── routes/
+│       ├── llm_echo.py
+│       ├── llm_proxy.py
+│       └── token_issuer.py
+├── llmops_dashboard.egg-info/
+├── prometheus.yml
+├── pyproject.toml
+└── tests/
+    ├── conftest.py
+    ├── e2e/
+    │   ├── __init__.py
+    │   ├── test_llm_echo.py
+    │   ├── test_llm_flow.py
+    │   ├── test_llm_traffic_simulation.py
+    │   ├── test_metrics_exposure.py
+    │   └── test_smoke_flow.py
+    └── unit/
+        ├── __init__.py
+        ├── test_database.py
+        ├── test_mcp_policy.py
+        ├── test_mcp_registry.py
+        ├── test_mcp_tracker.py
+        └── test_reset_prometheus.py
+```
+---
+
+## ⚠️ Common Issues
+
+| Problem                 | Fix                                 |
+| ----------------------- | ----------------------------------- |
+| `permission denied`     | `sudo chmod -R u+w data/`           |
+| Grafana panels blank    | Change viz → Save dashboard         |
+| Prometheus not scraping | Confirm `prometheus.yml` + mounts   |
+| JWT not working         | Regenerate with `make generate-jwt` |
+| Logs not showing        | Check headers, JWT, and `usage.db`  |
+| Ollama error on /llm    | Run `ollama list`, ensure model     |
 
 ---
 
-## 🧠 Future Enhancements
+## 🧠 Roadmap Ideas
 
-* ✅ Add alert rules for spike detection (fallback %, latency, errors)
-* 🔗 Hook into Loki / Elasticsearch for log aggregation
-* 🔁 Use Ollama or OpenAI completions in `llm_proxy.py`
-* 📋 Render recent prompts in Grafana using a table panel or exporter
+* ✅ Local LLaMA 3 echo integration via `/llm/echo`
+* ✅ Ollama model warm-up + blob validation
+* ✅ JWT-secured metrics + prompt logging
+* 🧠 Auto Summary via scheduled script (summarize_logs.py)
+* 🧠 Minimalist Copilot prompt box (auth + LLM streaming)
+* 📈 Prometheus alert rules for latency, failures
+* 🧩 Loki for centralized log ingestion
+* ⚙️ Runtime backend toggle (Ollama/OpenAI/HF)
+* 📋 Prompt history + stats table in Grafana
 
----
-
-## 🔒 Maintainer Notes
-
-* Internal-only dashboards: `grafana/dashboards/dev_*.json`
-* Public dashboards: `llmops_overview.json` only
-* Never commit: `.env`, `data/*.db`, local token values
+> Use these features to test local dev, CI observability, and future agentic workflows.
 
 ---
 
 ## 📜 License
 
-MIT — see `LICENSE`
+MIT — see [`LICENSE`](./LICENSE)
+
+---
+
+Welcome to the observability edge for LLMOps. 🧠📈
+Now go build responsibly.
 
 ---

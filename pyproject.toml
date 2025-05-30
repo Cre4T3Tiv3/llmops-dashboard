@@ -1,0 +1,49 @@
+[project]
+name = "llmops-dashboard"
+version = "0.2.0"
+description = "LLMOps observability prototype using FastAPI, Prometheus, and Grafana"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Jesse Moses", email = "jlmoses@outlook.com" }
+]
+dependencies = [
+    "fastapi==0.110.2",
+    "uvicorn==0.29.0",
+    "PyJWT==2.8.0",
+    "prometheus-client==0.20.0",
+    "prometheus-fastapi-instrumentator==6.1.0",
+    "python-dotenv==1.0.1"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.2.0",
+    "httpx==0.27.0",
+    "pytest-mock==3.14.0",
+    "pytest-asyncio==0.23.5"
+]
+
+keywords = ["llmops", "observability", "fastapi", "prometheus", "grafana"]
+
+[project.urls]
+homepage = "https://github.com/Cre4T3Tiv3/llmops-dashboard"
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "llmops"
+]
+addopts = "-ra"
+testpaths = [
+    "tests"
+]
+markers = [
+  "unit: mark a test as a unit test.",
+  "e2e: mark a test as an end-to-end integration test.",
+  "asyncio: mark test to be run with pytest-asyncio"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["llmops*"]
+exclude = ["data", "docker", "grafana", "tests", "docs"]

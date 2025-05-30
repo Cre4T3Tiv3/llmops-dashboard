@@ -1,17 +1,17 @@
 # Dockerfile
 FROM python:3.11-slim
 
-WORKDIR /app
-
-# Install uv tool
+# Install uv
 RUN pip install --upgrade pip && pip install uv
 
-# Copy project
-COPY . /app
+# Set working directory
+WORKDIR /app
 
-# Install dependencies from requirements.txt
-RUN uv pip install -r requirements.txt --system
+# Copy source files
+COPY . .
 
-EXPOSE 8000
+# Install base + editable project
+RUN uv pip install --system --editable .
 
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start FastAPI app
+CMD ["uvicorn", "llmops.main:app", "--host", "0.0.0.0", "--port", "8000"]
