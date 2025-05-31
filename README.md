@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <em>Secure, observable, local-first LLM workflows — powered by LLaMA3, FastAPI, and Prometheus</em>
+  <em>Secure, observable, local-first LLM workflows — powered by FastAPI, LLaMA3, and Prometheus</em>
 </p>
 
 <p align="center">
@@ -27,8 +27,6 @@
 
 LLMOps Dashboard is a modular open-source observability stack
 for LLM systems — built with FastAPI, Prometheus, Grafana, and SQLite.
-
-💡 Powered by **LLaMA 3 (via Ollama)** for secure, local inference.
 
 It helps you monitor:
 
