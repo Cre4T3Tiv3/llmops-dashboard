@@ -5,12 +5,15 @@
 </p>
 
 <p align="center">
-  <em>Secure, observable, local-first LLM workflows — powered by FastAPI, LLaMA3, and Prometheus</em>
+  <em>Secure, observable, local-first LLM workflows that are powered by FastAPI, LLaMA3, and Prometheus</em>
 </p>
 
 <p align="center">
   <a href="https://github.com/Cre4T3Tiv3/llmops-dashboard/actions/workflows/ci.yml?query=branch%3Amain" target="_blank">
     <img src="https://github.com/Cre4T3Tiv3/llmops-dashboard/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI">
+  </a>
+  <a href="https://www.python.org/downloads/" target="_blank">
+    <img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+">
   </a>
   <a href="https://opensource.org/licenses/MIT" target="_blank">
     <img src="https://img.shields.io/github/license/Cre4T3Tiv3/llmops-dashboard" alt="License: MIT">
@@ -18,32 +21,32 @@
   <a href="https://github.com/Cre4T3Tiv3/llmops-dashboard/stargazers" target="_blank">
     <img src="https://img.shields.io/github/stars/Cre4T3Tiv3/llmops-dashboard?style=social" alt="GitHub Stars">
   </a>
-  <a href="https://www.python.org/downloads/" target="_blank">
-    <img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+">
+  <a href="#contributing" target="_blank">
+    <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg" alt="Contributions welcome">
   </a>
 </p>
 
-## ✨ Why This Exists
+## Why This Exists
 
 LLMOps Dashboard is a modular open-source observability stack
-for LLM systems — built with FastAPI, Prometheus, Grafana, and SQLite.
+for LLM systems that is built with FastAPI, Prometheus, Grafana, and SQLite.
 
 It helps you monitor:
 
-* 🧠 Prompt/response metadata
-* ⏱️ Latency (p95, per-user)
-* 📉 Token usage and fallback behavior
-* 🔐 JWT-based user tracking
-* 📊 Real-time dashboards for analysis
+* Prompt/response metadata
+* Latency (p95, per-user)
+* Token usage and fallback behavior
+* JWT-based user tracking
+* Real-time dashboards for analysis
 
 This OSS project provides a full-stack **starter template** for building
 **production-grade observability for LLM applications** — local or cloud.
 
-> ✅ Built for local-first development, extensibility, and minimal infra overhead.
+> ℹ️ Built for local-first development, extensibility, and minimal infra overhead.
 
 ---
 
-## 🧠 Model Control Plane (MCP)
+## Model Control Plane (MCP)
 
 The MCP (Model Control Plane) is a lightweight module that tracks **which models are used**, by **whom**, and under **what policy constraints**.
 
@@ -51,11 +54,11 @@ It enables:
 
 | Capability                | Description                                                               |
 | ------------------------- | ------------------------------------------------------------------------- |
-| 🔢 Model Registration     | Track models by name, size, alias, and source                             |
-| 👤 Per-Client Policies    | Enforce token limits per user/client                                      |
-| 🔀 Dynamic Policy Control | Policies can be modified at runtime or pre-configured at boot             |
-| 📊 Metrics Integration    | Token counts and usage policies propagate into `/metrics` Prometheus feed |
-| 🪪 Identity Tracking      | Associates JWT-authenticated users with tracked model usage               |
+| Model Registration     | Track models by name, size, alias, and source                             |
+| Per-Client Policies    | Enforce token limits per user/client                                      |
+| Dynamic Policy Control | Policies can be modified at runtime or pre-configured at boot             |
+| Metrics Integration    | Token counts and usage policies propagate into `/metrics` Prometheus feed |
+| Identity Tracking      | Associates JWT-authenticated users with tracked model usage               |
 
 Example usage:
 
@@ -69,28 +72,28 @@ model_registry.register_model("llama3", "8b", alias="dev")
 usage_policy.set_policy("client-x", max_tokens=5000)
 ```
 
-> 🧠 This system can evolve into a **policy enforcement and audit framework**, especially in multi-user environments where tracking LLM usage, enforcing limits, or billing per token becomes critical.
+> ℹ️ This system can evolve into a **policy enforcement and audit framework**, especially in multi-user environments where tracking LLM usage, enforcing limits, or billing per token becomes critical.
 
 ---
 
-## 🔧 What It Does (Current Stack)
+## What It Does (Current Stack)
 
 | Feature                 | Description                                             |
 | ----------------------- | ------------------------------------------------------- |
-| 🔐 JWT Auth             | Secure `/llm` with per-user access tokens               |
-| 🧠 MCP Integration      | Tracks model usage, policy limits, token stats          |
-| 📈 Prometheus Metrics   | Request rate, p95 latency, fallback %, etc.             |
-| 📊 Grafana Dashboard    | Includes working starter panels for request and latency |
-| 📂 SQLite Audit Trail   | Logs prompt, user, model, token count                   |
-| 🧪 Simulation + Testing | Run `make simulate` or `make smoke-test`                |
-| 🤖 LLM Integration     | Supports mock + real LLaMA 3 (Ollama) model endpoints    |
-| 🦙 LLaMA 3 (Ollama)    | Real local inference via `/llm/echo` using Ollama        |
+| JWT Auth             | Secure `/llm` with per-user access tokens               |
+| MCP Integration      | Tracks model usage, policy limits, token stats          |
+| Prometheus Metrics   | Request rate, p95 latency, fallback %, etc.             |
+| Grafana Dashboard    | Includes working starter panels for request and latency |
+| SQLite Audit Trail   | Logs prompt, user, model, token count                   |
+| Simulation + Testing | Run `make simulate` or `make smoke-test`                |
+| LLM Integration     | Supports mock + real LLaMA 3 (Ollama) model endpoints    |
+| LLaMA 3 (Ollama)    | Real local inference via `/llm/echo` using Ollama        |
 
-## 🤖 LLM Integration Status
+## LLM Integration Status
 
 This project supports **both mock and real LLM inference**:
 
-### ✅ `/llm` (Simulated)
+### `/llm` (Simulated)
 
 Default route for testing:
 
@@ -106,7 +109,7 @@ if random.random() < 0.3:
 return {"response": f"[{model_used.capitalize()}] Answer to: {prompt}"}
 ````
 
-### ✅ `/llm/echo` (Real LLaMA 3 via Ollama)
+### `/llm/echo` (Real LLaMA 3 via Ollama)
 
 Backed by real local inference using [Ollama](https://ollama.com):
 
@@ -127,9 +130,9 @@ curl -X POST http://localhost:8000/llm/echo \
 ```
 ---
 
-## 🔭 Planned Integrations (Roadmap)
+## Planned Integrations (Roadmap)
 
-✅ Currently supported:
+Currently supported:
 
 * ✅ Local LLM echo endpoint via `llama3` + Ollama (`/llm/echo`)
 * ✅ GPU-ready Docker support with offline model warmup
@@ -138,7 +141,7 @@ curl -X POST http://localhost:8000/llm/echo \
 * ✅ SQLite-based request logging
 * ✅ Test coverage and E2E support
 
-🚧 Coming soon:
+Coming soon:
 
 * [ ] Auto Summary Mode
   - Nightly background task summarizes recent logs via LLM
@@ -153,17 +156,17 @@ curl -X POST http://localhost:8000/llm/echo \
 * [ ] Token pricing and billing estimation
 * [ ] Slack alerting or LLM log summaries
 
-📦 Pluggable LLM Providers:
+Pluggable LLM Providers:
 
 * [ ] OpenAI API via `openai.ChatCompletion`
 * [x] Local Ollama models via `ollama run`
 * [ ] Hugging Face `transformers` with local inference engine
 
-> 💡 Contributions welcome — especially around modular LLM adapters and frontend UX.
+> ℹ️ Contributions welcome — especially around modular LLM adapters and frontend UX.
 
 ---
 
-## 🔐 JWT Secrets
+## JWT Secrets
 
 This project **requires** `JWT_SECRET` to be set via `.env`, environment variables, or secret injection.
 
@@ -171,7 +174,7 @@ This project **requires** `JWT_SECRET` to be set via `.env`, environment variabl
 JWT_SECRET=supersecretkey        # ⚠️ For local testing only (ChangeMe)
 ```
 
-### 🔍 Used in code
+### Used in code
 
 ```python
 # token_issuer.py / auth.py
@@ -180,7 +183,7 @@ if not JWT_SECRET:
     raise RuntimeError("JWT_SECRET must be set")
 ```
 
-### 🧪 Used in tests
+### Used in tests
 
 ```python
 # conftest.py
@@ -189,10 +192,10 @@ if not secret:
     raise RuntimeError("❌ JWT_SECRET not set in environment")
 ```
 
-✅ `.env` is auto-loaded in local development and test runs.
-✅ Docker services consume `JWT_SECRET` via `docker-compose.yaml`.
+`.env` is auto-loaded in local development and test runs.
+Docker services consume `JWT_SECRET` via `docker-compose.yaml`.
 
-> 🔐 Before production use, replace with secure injection methods:
+> ⚠️ Before production use, replace with secure injection methods:
 >
 > * Docker secrets
 > * CI/CD secret management
@@ -200,7 +203,7 @@ if not secret:
 
 ---
 
-## 📊 Grafana Access
+## Grafana Access
 
 By default, the dashboard uses:
 
@@ -210,40 +213,40 @@ GRAFANA_ADMIN_PASSWORD=llmops    # ⚠️ Used for initial dashboard provisionin
 GRAFANA_ALLOW_ANON=true          # ⚠️ Used for initial dashboard provisioning and local testing only (ChangeMe)
 ```
 
-📝 Change these in `.env` for production deployments.
+⚠️ Change these in `.env` for production deployments.
 
 You can also enable or disable anonymous access via Grafana's `provisioning` config.
 
 ---
 
-## 📊 Grafana Overview Dashboard
+## Grafana Overview Dashboard
 
-📁 `grafana/dashboards/llmops_overview.json` includes:
+`grafana/dashboards/llmops_overview.json` includes:
 
 | Panel Title                 | Description                           |
 | --------------------------- | ------------------------------------- |
-| 📈 LLM Request Rate by User | Frequency of requests per unique user |
-| 📉 Latency by User (p95)    | p95 latency distribution by user ID   |
+| LLM Request Rate by User | Frequency of requests per unique user |
+| Latency by User (p95)    | p95 latency distribution by user ID   |
 
-> ✨ Auto-loaded by Grafana on container start using provisioning config.
-> ✅ Anonymous access enabled via `.env.example` credentials.
+> ℹ️ Auto-loaded by Grafana on container start using provisioning config.
+> ℹ️ Anonymous access enabled via `.env.example` credentials.
 
 More panels (e.g., fallback %, token bar charts) can be added easily.
 
 ---
 
-## 🧪 Run Tests (Unit + E2E)
+## Run Tests (Unit + E2E)
 
 ```bash
 make test-unit     # Fast logic tests (auth, db, policy)
 make test-e2e      # Full-stack smoke test w/ JWT and DB
 ```
 
-> ✅ E2E tests simulate real API calls via HTTP, JWT, and DB assertions.
+> ℹ️ E2E tests simulate real API calls via HTTP, JWT, and DB assertions.
 
 ---
 
-## ✨ Quickstart
+##  Quickstart
 
 ```bash
 git clone https://github.com/Cre4T3Tiv3/llmops-dashboard.git
@@ -253,19 +256,19 @@ make init
 
 This does everything:
 
-* ✅ Verifies required tools (`docker`, `sqlite3`, `ollama`, etc.) via `make check`
-* ✅ Installs [uv](https://github.com/astral-sh/uv) if missing
-* ✅ Sets up `.venv` and installs `pyproject.toml` dependencies
-* ✅ Auto-creates `.env` from `.env.example` if missing
-* ✅ Confirms your selected Ollama model (e.g. `llama3`) is available locally
+* Verifies required tools (`docker`, `sqlite3`, `ollama`, etc.) via `make check`
+* Installs [uv](https://github.com/astral-sh/uv) if missing
+* Sets up `.venv` and installs `pyproject.toml` dependencies
+* Auto-creates `.env` from `.env.example` if missing
+* Confirms your selected Ollama model (e.g. `llama3`) is available locally
 
 This project uses [`uv`](https://github.com/astral-sh/uv) — a **fast and modern Python package manager** — for all local and Docker-based dependency management.
 
-> 📦 No `requirements.txt` is needed — dependencies are resolved via `pyproject.toml`.
+> ℹ️ No `requirements.txt` is needed — dependencies are resolved via `pyproject.toml`.
 
 ---
 
-### ✅ Step 1: Verify Local Environment
+### Step 1: Verify Local Environment
 
 Run the following to re-check your setup at any time:
 
@@ -275,11 +278,11 @@ make check
 
 This confirms:
 
-* ✅ Docker and docker-compose are available
-* ✅ `sqlite3` is installed (required for `make smoke-test`)
-* ✅ `.env` is present and contains necessary keys like `JWT_SECRET`
-* ✅ `ollama` CLI is installed and working
-* ✅ Your selected model (via `$OLLAMA_MODEL`) is installed
+* Docker and docker-compose are available
+* `sqlite3` is installed (required for `make smoke-test`)
+* `.env` is present and contains necessary keys like `JWT_SECRET`
+* `ollama` CLI is installed and working
+* Your selected model (via `$OLLAMA_MODEL`) is installed
 
 If the model is missing, you’ll see a warning like:
 
@@ -287,11 +290,11 @@ If the model is missing, you’ll see a warning like:
 ❌ Model 'llama3' not found in ollama list
 ```
 
-> 💡 This step is included in `make init` but can be run independently.
+> ℹ️ This step is included in `make init` but can be run independently.
 
 ---
 
-### 🧪 Step 2: Launch the Full Stack
+### Step 2: Launch the Full Stack
 
 ```bash
 make up
@@ -309,14 +312,14 @@ This builds and starts:
 
 ---
 
-### 💡 Want more? See:
+### Want more? See:
 
-📄 [HOWTO and E2E Testing Guide](docs/HOWTO_and_E2E_Testing.md)
-🤝 [Contributor Guide](docs/CONTRIBUTING.md)
+[HOWTO and E2E Testing Guide](docs/HOWTO_and_E2E_Testing.md)
+[Contributor Guide](docs/CONTRIBUTING.md)
 
 ---
 
-## 🧪 Sample Authenticated Request
+## Sample Authenticated Request
 
 ```bash
 make generate-jwt
@@ -329,7 +332,7 @@ curl -X POST http://localhost:8000/llm \
 
 ---
 
-## 📁 Directory Layout
+## Directory Layout
 ```text
 llmops-dashboard/
 ├── .dockerignore
@@ -392,7 +395,7 @@ llmops-dashboard/
 ```
 ---
 
-## 🛠️ Makefile Commands
+## Makefile Commands
 
 ```bash
 make up                # Start full stack (FastAPI + Prometheus + Grafana)
@@ -404,17 +407,17 @@ make clean             # Delete usage.db and logs
 make nuke              # Destroy all containers, volumes, cache
 ```
 
-> 💡 All commands assume `uv` is installed locally. See [uv GitHub page](https://github.com/astral-sh/uv)
+> ℹ️ All commands assume `uv` is installed locally. See [uv GitHub page](https://github.com/astral-sh/uv)
 
 
-### 💡 Want more? See:
+### Want more? See:
 
-📄 [HOWTO and E2E Testing Guide](docs/HOWTO_and_E2E_Testing.md)
-🤝 [Contributor Guide](docs/CONTRIBUTING.md)
+[HOWTO and E2E Testing Guide](docs/HOWTO_and_E2E_Testing.md)
+[Contributor Guide](docs/CONTRIBUTING.md)
 
 ---
 
-## ⚠️ Requirements
+## Requirements
 
 * Docker (v20+)
 * Linux or WSL (native Windows not supported yet)
@@ -423,7 +426,7 @@ make nuke              # Destroy all containers, volumes, cache
 
 ---
 
-## 📚 Use Cases
+## Use Cases
 
 * OpenAI/Ollama observability for internal tools
 * Fine-grained request tracking (JWT, latency, token use)
@@ -443,9 +446,9 @@ make nuke              # Destroy all containers, volumes, cache
 
 ---
 
-## 🧠 Philosophy
+## Philosophy
 
-This project isn’t just a toy — but it’s also not a locked-in framework.
+This project isn’t just a toy but, it’s also not a locked-in framework.
 
 You can:
 
@@ -459,13 +462,13 @@ The rest is yours to extend ♻️
 
 ---
 
-## 📜 License
+## License
 
-MIT — see [`LICENSE`](./LICENSE)
+MIT © 2025 [@Cre4T3Tiv3](https://github.com/Cre4T3Tiv3)
 
 ---
 
 > Built for the LLM observability era.
-> OSS, modular, and easy to reason about 🧠📊
+> OSS, modular, and easy to reason about.
 
 ---
