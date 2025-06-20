@@ -1,10 +1,10 @@
-# 🛠️ LLMOps Dashboard — Developer Notes
+# LLMOps Dashboard — Developer Notes
 
 This document extends [`README.md`](./README.md) with advanced setup, debugging, and testing workflows tailored for contributors and maintainers.
 
 ---
 
-## 🚀 Developer Quickstart
+## Developer Quickstart
 
 ```bash
 make init            # Verify tools, set up .venv, install deps
@@ -15,11 +15,11 @@ make logs            # Stream FastAPI logs
 make shell           # Bash into FastAPI container
 ```
 
-> 📘 See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for PR conventions and coding standards.
+> ℹ️ See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for PR conventions and coding standards.
 
 ---
 
-## ✅ Environment Verifier (`make check`)
+## Environment Verifier (`make check`)
 
 Run this anytime to confirm your machine is ready for development:
 
@@ -29,11 +29,11 @@ make check
 
 This verifies:
 
-* ✅ Docker and docker-compose availability
-* ✅ `sqlite3` is installed (needed for DB and smoke tests)
-* ✅ `.env` file exists and has `JWT_SECRET`
-* ✅ `ollama` is installed and accessible
-* ✅ The configured model (via `$OLLAMA_MODEL`, e.g., `llama3`) is present
+* Docker and docker-compose availability
+* `sqlite3` is installed (needed for DB and smoke tests)
+* `.env` file exists and has `JWT_SECRET`
+* `ollama` is installed and accessible
+* The configured model (via `$OLLAMA_MODEL`, e.g., `llama3`) is present
 
 If the model is missing, you’ll see:
 
@@ -41,11 +41,11 @@ If the model is missing, you’ll see:
 ❌ Model 'llama3' not found in ollama list
 ```
 
-> This is automatically run as part of `make init`.
+> ℹ️ This is automatically run as part of `make init`.
 
 ---
 
-## 🔐 JWT Auth Debugging
+## JWT Auth Debugging
 
 ```bash
 make generate-jwt
@@ -65,13 +65,13 @@ curl -X POST http://localhost:8000/llm \
 * Default subject is `demo-user`
 * Valid for 5–15 minutes (see `token_issuer.py`)
 
-> 🧪 Also used in tests (see `conftest.py` for validation)
+> ℹ️ Also used in tests (see `conftest.py` for validation)
 
 ---
 
-## 📊 Grafana Dashboard Tips
+## Grafana Dashboard Tips
 
-### ✅ Default Dashboard Provisioning
+### Default Dashboard Provisioning
 
 This project auto-loads `grafana/dashboards/llmops_overview.json`
 on container start via built-in provisioning (see `docker/grafana.ini`).
@@ -86,12 +86,12 @@ GRAFANA_ALLOW_ANON=true          # ⚠️ Used for initial dashboard provisionin
 
 * Access at [http://localhost:3000](http://localhost:3000)
 
-### 🔁 If panels look empty:
+### If panels look empty:
 
 * Change visualization type (e.g., Bar → Stat → Bar)
 * Click “Save dashboard” to reload panel bindings
 
-### 📤 Save custom dashboards:
+### Save custom dashboards:
 
 1. Open dashboard → ⚙️ → JSON Model
 2. Save to:
@@ -100,11 +100,11 @@ GRAFANA_ALLOW_ANON=true          # ⚠️ Used for initial dashboard provisionin
 grafana/dashboards/llmops_overview.json
 ```
 
-> Avoid hardcoding tokens, passwords, or local paths.
+> ⚠️ Avoid hardcoding tokens, passwords, or local paths.
 
 ---
 
-## 🔄 Reset Prometheus Metrics
+## Reset Prometheus Metrics
 
 ```bash
 make reset-prometheus
@@ -121,7 +121,7 @@ sudo chmod -R u+w prometheus-data/
 
 ---
 
-## 🗃️ SQLite Debugging
+## SQLite Debugging
 
 Main DB is located at:
 
@@ -143,7 +143,7 @@ make clean
 
 ---
 
-## 🧪 Testing + Simulation
+## Testing + Simulation
 
 | Command           | Description                                       |
 | ----------------- | ------------------------------------------------- |
@@ -151,11 +151,11 @@ make clean
 | `make smoke-test` | Runs E2E: JWT, prompt, metrics, DB log            |
 | `make test`       | All tests (unit + E2E + MCP)                      |
 
-> 🔬 See [HOWTO\_and\_E2E\_Testing.md](docs/HOWTO_and_E2E_Testing.md) for walkthroughs.
+> ℹ️ See [HOWTO\_and\_E2E\_Testing.md](docs/HOWTO_and_E2E_Testing.md) for walkthroughs.
 
 ---
 
-## 🔥 Full Environment Reset
+## Full Environment Reset
 
 ```bash
 make nuke
@@ -167,7 +167,7 @@ Fully wipes your environment:
 * Clears `prometheus-data` and `data/*.db`
 * Deletes `.venv` and Python caches
 
-> 🧹 To uninstall SQLite:
+> ℹ️ To uninstall SQLite:
 >
 > * `sudo apt remove sqlite3`
 > * `sudo dnf remove sqlite`
@@ -175,7 +175,7 @@ Fully wipes your environment:
 
 ---
 
-## 📦 Dependency Management via `uv`
+## Dependency Management via `uv`
 
 This project uses [`uv`](https://github.com/astral-sh/uv):
 
@@ -189,7 +189,7 @@ make dev-install
 
 ---
 
-## 🧪 MCP Test Coverage
+## MCP Test Coverage
 
 | Module              | Responsibilities                       |
 | ------------------- | -------------------------------------- |
@@ -207,7 +207,7 @@ pytest tests/e2e/test_smoke_flow.py
 
 ---
 
-## 📁 Component Map
+## Component Map
 
 ```text
 llmops-dashboard/
@@ -271,7 +271,7 @@ llmops-dashboard/
 ```
 ---
 
-## ⚠️ Common Issues
+## Common Issues
 
 | Problem                 | Fix                                 |
 | ----------------------- | ----------------------------------- |
@@ -284,7 +284,7 @@ llmops-dashboard/
 
 ---
 
-## 🧠 Roadmap Ideas
+## Roadmap Ideas
 
 * ✅ Local LLaMA 3 echo integration via `/llm/echo`
 * ✅ Ollama model warm-up + blob validation
@@ -300,13 +300,13 @@ llmops-dashboard/
 
 ---
 
-## 📜 License
+## License
 
-MIT — see [`LICENSE`](./LICENSE)
+MIT © 2025 [@Cre4T3Tiv3](https://github.com/Cre4T3Tiv3)
 
 ---
 
-Welcome to the observability edge for LLMOps. 🧠📈
+Welcome to the observability edge for LLMOps.
 Now go build responsibly.
 
 ---
