@@ -1,14 +1,14 @@
-# 🧪 HOWTO + E2E TESTING: LLMOps Dashboard
+# HOWTO + E2E TESTING: LLMOps Dashboard
 
 A full guide to setting up, simulating, and debugging your local **LLMOps Dashboard** — from FastAPI to Prometheus to Grafana.
 
-> 💡 Powered by LLaMA 3 (via Ollama) for secure, local inference.
+> ℹ️ Powered by LLaMA 3 (via Ollama) for secure, local inference.
 
 ---
 
-## ✅ FULL STACK SETUP (LOCAL)
+## FULL STACK SETUP (LOCAL)
 
-### 🪜 Step 0: Clone & Initialize
+### Step 0: Clone & Initialize
 
 ```bash
 git clone https://github.com/Cre4T3Tiv3/llmops-dashboard.git
@@ -24,11 +24,11 @@ This does everything:
 * ✅ Creates `.env` from `.env.example` if not already present
 * ✅ Confirms Ollama model is available and ready (`llama3`)
 
-> 🧪 Re-run `make check` anytime to validate environment setup
+> ℹ️ Re-run `make check` anytime to validate environment setup
 
 ---
 
-### 🪜 Step 1: Launch the Full Stack
+### Step 1: Launch the Full Stack
 
 ```bash
 make up
@@ -44,7 +44,7 @@ Services:
 
 ---
 
-### 🪜 Step 2: Generate a Demo JWT
+### Step 2: Generate a Demo JWT
 
 ```bash
 make generate-jwt
@@ -54,7 +54,7 @@ Returns a valid token for user `demo-user`.
 
 ---
 
-### 🪜 Step 3: Test `/llm/echo` (LLaMA 3 Local Model)
+### Step 3: Test `/llm/echo` (LLaMA 3 Local Model)
 
 ```bash
 curl -X POST http://localhost:8000/llm/echo \
@@ -72,7 +72,7 @@ Response (from `llama3`):
 
 ---
 
-### 🪜 Step 4: Test `/metrics`
+### Step 4: Test `/metrics`
 
 Visit:
 
@@ -88,7 +88,7 @@ request_count_total{endpoint="/llm/echo",method="POST",user="demo-user"} 1
 
 ---
 
-### 🪜 Step 5: View in Prometheus
+### Step 5: View in Prometheus
 
 Open:
 
@@ -104,7 +104,7 @@ sum by(user) (rate(request_count_total[1m]))
 
 ---
 
-### 🪜 Step 6: Load Grafana Dashboard
+### Step 6: Load Grafana Dashboard
 
 Grafana runs with **anonymous access enabled by default** using the following preset credentials (configured via `.env`):
 
@@ -132,17 +132,17 @@ grafana/dashboards/llmops_overview.json
 
 4. You’ll see:
 
-* 📊 LLM requests per user
-* 📉 Latency histograms
-* 🧠 Token usage trends
+* LLM requests per user
+* Latency histograms
+* Token usage trends
 
-> 💡 If the panel is blank, toggle **Bar ↔ Stat** and Save.
+> ℹ️ If the panel is blank, toggle **Bar ↔ Stat** and Save.
 
-> 🔒 **Tip:** You can disable anonymous mode or change admin credentials in `.env` before deployment.
+> ℹ️ **Tip:** You can disable anonymous mode or change admin credentials in `.env` before deployment.
 
 ---
 
-### 🪜 Step 7: SQLite Debugging (Optional)
+### Step 7: SQLite Debugging (Optional)
 
 ```bash
 make shell
@@ -151,7 +151,7 @@ sqlite3 data/usage.db 'SELECT * FROM usage_logs ORDER BY id DESC LIMIT 5;'
 
 ---
 
-### 🪜 Step 8: Simulate LLM Traffic
+### Step 8: Simulate LLM Traffic
 
 ```bash
 make simulate
@@ -161,7 +161,7 @@ This sends 25 test `/llm` calls using `demo-user`. Prometheus and Grafana will r
 
 ---
 
-### 🪜 Step 9: Run Full Smoke Test
+### Step 9: Run Full Smoke Test
 
 ```bash
 make smoke-test
@@ -176,9 +176,9 @@ Validates:
 
 ---
 
-## 🧪 E2E TESTING
+## E2E TESTING
 
-### ✅ Basic Flow
+### Basic Flow
 
 Use an isolated test DB:
 
@@ -197,7 +197,7 @@ make test-e2e     # Only E2E tests
 
 ---
 
-### 🔁 Traffic + MCP Policy
+### Traffic + MCP Policy
 
 Check these:
 
@@ -209,11 +209,11 @@ Check these:
 | `test_mcp_registry.py`           | Confirms model registry behavior             |
 | `test_mcp_policy.py`             | Enforces policy on tokens / limits           |
 
-✅ MCP, metrics, and DB logging are verified end-to-end.
+> ℹ️ MCP, metrics, and DB logging are verified end-to-end.
 
 ---
 
-### 🧠 Real-Time Metrics
+### Real-Time Metrics
 
 When running via `make up`, Prometheus will show live stats:
 
@@ -229,7 +229,7 @@ http://localhost:3000
 
 ---
 
-### 🐳 Docker Notes
+### Docker Notes
 
 Docker Compose handles:
 
@@ -244,7 +244,7 @@ Docker Compose handles:
 
 ---
 
-## 🔄 Reset Prometheus
+## Reset Prometheus
 
 ```bash
 make reset-prometheus
@@ -258,7 +258,7 @@ curl 'http://localhost:9090/api/v1/series?match[]=request_count_total'
 
 ---
 
-## 🔐 JWT Secret Setup
+## JWT Secret Setup
 
 This project **requires** `JWT_SECRET` to be set via `.env`, environment variables, or secret injection.
 
@@ -276,7 +276,7 @@ if not JWT_SECRET:
 
 ---
 
-## 🚨 TROUBLESHOOTING
+## TROUBLESHOOTING
 
 ### ❌ 401 Unauthorized
 
@@ -304,8 +304,8 @@ Confirm token and headers were passed correctly.
 
 ---
 
-## 📜 License
+## License
 
-MIT — see [`LICENSE`](../LICENSE)
+MIT © 2025 [@Cre4T3Tiv3](https://github.com/Cre4T3Tiv3)
 
 ---
