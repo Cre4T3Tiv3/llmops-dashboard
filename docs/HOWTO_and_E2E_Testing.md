@@ -1,6 +1,6 @@
 # HOWTO + E2E TESTING: LLMOps Dashboard
 
-A full guide to setting up, simulating, and debugging your local **LLMOps Dashboard** — from FastAPI to Prometheus to Grafana.
+A full guide to setting-up, simulating, and debugging your local **LLMOps Dashboard**.
 
 > ℹ️ Powered by LLaMA 3 (via Ollama) for secure, local inference.
 
