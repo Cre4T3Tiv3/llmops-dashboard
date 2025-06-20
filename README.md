@@ -308,7 +308,7 @@ This builds and starts:
 | Prometheus | [http://localhost:9090](http://localhost:9090) |
 | Grafana    | [http://localhost:3000](http://localhost:3000) |
 
-> ✨ Dashboard at Grafana auto-loads `grafana/dashboards/llmops_overview.json`
+> ℹ️ Dashboard at Grafana auto-loads `grafana/dashboards/llmops_overview.json`
 
 ---
 
