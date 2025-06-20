@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/Cre4T3Tiv3/llmops-dashboard" target="_blank">
-    <img src="https://raw.githubusercontent.com/Cre4T3Tiv3/llmops-dashboard/main/docs/assets/llmops_dashboard_v0.2.0.jpg" alt="LLMOps Dashboard social preview" width="640"/>
+    <img src="https://raw.githubusercontent.com/Cre4T3Tiv3/llmops-dashboard/main/docs/assets/llmops_dashboard_v0.2.0.jpeg" alt="LLMOps Dashboard social preview" width="640"/>
   </a>
 </p>
 
