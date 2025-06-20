@@ -1,11 +1,10 @@
-# 🤝 Contributing to LLMOps Dashboard
+# Contributing to LLMOps Dashboard
 
-Thanks for your interest in contributing!
-**LLMOps Dashboard** is a modular, testable observability stack for monitoring LLM usage, performance, and policy adherence — built for clarity, velocity, and OSS excellence.
+Thank you for your interest in contributing to **LLMOps Dashboard**!
 
 ---
 
-## 🛠️ Local Development Setup
+## Local Development Setup
 
 ### 1. Clone & Initialize
 
@@ -17,14 +16,14 @@ make init
 
 This handles:
 
-* ✅ System checks for Docker, Compose, SQLite3, etc. via `make check`
-* ✅ Installs `uv` if missing (modern Python manager)
-* ✅ Creates a virtual environment
-* ✅ Installs editable package with `[dev]` extras
-* ✅ Auto-copies `.env.example` → `.env` (if not already present)
-* ✅ Verifies `ollama` is installed and the local model (e.g. `llama3`) is available
+*System checks for Docker, Compose, SQLite3, etc. via `make check`
+* Installs `uv` if missing (modern Python manager)
+* Creates a virtual environment
+* Installs editable package with `[dev]` extras
+* Auto-copies `.env.example` → `.env` (if not already present)
+* Verifies `ollama` is installed and the local model (e.g. `llama3`) is available
 
-> 💡 Rerun `make check` anytime to verify your local setup.
+> ℹ️ Rerun `make check` anytime to verify your local setup.
 
 ### 2. Launch Dev Stack
 
@@ -38,7 +37,7 @@ Brings up the FastAPI (w/ --reload), Prometheus, and Grafana services via Docker
 
 ---
 
-## 🧪 Full Test Suite
+## Full Test Suite
 
 ### Run all tests
 
@@ -61,7 +60,7 @@ make smoke-test    # API/metrics/db integration in one test
 
 ---
 
-## 🧠 Contributing Scope
+## Contributing Scope
 
 Here’s where you can plug in:
 
@@ -79,7 +78,7 @@ Here’s where you can plug in:
 
 ---
 
-## 🔁 Makefile UX Reference
+## Makefile UX Reference
 
 | Command                 | Description                                  |
 | ----------------------- | -------------------------------------------- |
@@ -101,11 +100,11 @@ Here’s where you can plug in:
 | `make test-e2e`         | Run only e2e tests                           |
 | `make test`             | Run all tests (unit + e2e)                   |
 
-> 🧪 `make check` confirms `docker`, `sqlite3`, `.env`, `ollama`, and local model readiness.
+> ℹ️ `make check` confirms `docker`, `sqlite3`, `.env`, `ollama`, and local model readiness.
 
 ---
 
-## ✅ Pre-Commit Checklist
+## Pre-Commit Checklist
 
 Before submitting a PR:
 
@@ -117,7 +116,7 @@ Before submitting a PR:
 
 ---
 
-## 💬 Commit Guidelines
+## Commit Guidelines
 
 We use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
 
@@ -129,7 +128,7 @@ docs(contrib): clarify JWT setup in Makefile
 
 ---
 
-## 🔐 JWT Secrets (for E2E)
+## JWT Secrets (for E2E)
 
 JWT is required for protected routes.
 `make init` ensures `.env` exists, and `make generate-jwt` uses its value.
@@ -145,14 +144,14 @@ Tests will fail early if `JWT_SECRET` is missing.
 
 ---
 
-## 📚 Additional Docs
+## Additional Docs
 
 * [`README.md`](../README.md) — Product overview
 * [`README.dev.md.`](../README.dev.md) — Developer setup and commands
 * [`HOWTO_and_E2E_Testing.md`](./HOWTO_and_E2E_Testing.md) — Full workflow reference
 ---
 
-Welcome aboard — we’re building this stack for real-world LLM ops at scale.
-Every contribution improves visibility, velocity, and trust. 💡
+Welcome aboard, we’re building this stack for real-world LLM ops at scale.
+Every contribution improves visibility, velocity, and trust.
 
 ---
