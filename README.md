@@ -464,7 +464,7 @@ The rest is yours to extend ♻️
 
 ## License
 
-MIT © 2025 [@Cre4T3Tiv3](https://github.com/Cre4T3Tiv3)
+[`MIT`](./LICENSE) – © 2025 [@Cre4T3Tiv3](https://github.com/Cre4T3Tiv3)
 
 ---
 
